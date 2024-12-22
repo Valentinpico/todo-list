@@ -16,9 +16,11 @@ function App() {
       <div className="flex justify-center h-screen items-center ">
         <FormUser />
       </div>
-      {/*   <div className="flex mt-20 justify-center items-center ">
-        <TodoList />
-      </div>*/}
+      {
+        <div className="flex mt-20 justify-center items-center ">
+          <TodoList />
+        </div>
+      }
 
       <Toast
         isVisible={toast.isVisible}

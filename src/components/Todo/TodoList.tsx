@@ -1,6 +1,5 @@
 import { useStoreUtils } from "../../store/useStoreUtils";
 import { useTodoStore } from "../../store/useTodoStore";
-import { Toast } from "../toast/toast";
 import { TodoCardList } from "./TodoCardList";
 
 export const TodoList = () => {

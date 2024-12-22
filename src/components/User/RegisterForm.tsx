@@ -46,6 +46,8 @@ export const RegisterForm = ({
         showError={showError}
         errorMessage="La contraseña es obligatoria"
         validate={(value) => value.length > 0}
+        maxLength={12}
+        minLength={4}
       />
       <Input
         label="Confirmar contraseña"

@@ -38,6 +38,8 @@ export const LoginForm = ({
         validate={(value) => value.length > 0}
         placeholder="Contraseña"
         showError={showError}
+        maxLength={10}
+        minLength={6}
       />
     </>
   );
