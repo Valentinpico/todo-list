@@ -10,17 +10,11 @@ import { useStoreUser } from "../../store/useStoreUser";
 
 interface TodoCardProps {
   todo: TodoType;
-  token: string;
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export const TodoCardList = ({
-  todo,
-  onToggle,
-  onDelete,
-  token,
-}: TodoCardProps) => {
+export const TodoCardList = ({ todo, onToggle, onDelete }: TodoCardProps) => {
   const setToken = useStoreUser((state) => state.setToken);
   const setTodoSelected = useTodoStore((state) => state.setTodoSelected);
   const showModal = useStoreUtils((state) => state.showModal);
@@ -29,7 +23,7 @@ export const TodoCardList = ({
   const date = convertDate(todo.createdAt);
 
   const handledDelete = async () => {
-    const res = await deleteTodoApi({ id: todo.id, token });
+    const res = await deleteTodoApi({ id: todo.id });
     if (!res.success) {
       setToast({
         message: res.message,
@@ -49,7 +43,6 @@ export const TodoCardList = ({
   const handleToggle = async () => {
     const res = await updateTodoApi({
       id: todo.id,
-      token,
       todo: { ...todo, completed: !todo.completed },
     });
     if (!res.success) {

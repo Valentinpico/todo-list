@@ -10,6 +10,7 @@ export const TodoList = () => {
   const SetUser = useStoreUser((state) => state.setUser);
 
   const todos = useTodoStore((state) => state.todos);
+  const setTodoSelected = useTodoStore((state) => state.setTodoSelected);
   const setTodos = useTodoStore((state) => state.setTodos);
   const deleteTodo = useTodoStore((state) => state.deleteTodo);
   const toggleTodo = useTodoStore((state) => state.toggleTodo);
@@ -38,7 +39,10 @@ export const TodoList = () => {
     <>
       <div className="my-4 m-auto text-lg bg-slate-100 p-4 rounded-lg w-11/12 sm:w-3/4 md:w-1/2 lg:w-2/5 xl:w-2/5 ">
         <button
-          onClick={() => showModal(true)}
+          onClick={() => {
+            showModal(true);
+            setTodoSelected(null);
+          }}
           className="text-center bg-pink-500 text-white uppercase rounded w-full my-2 p-1 text-2xl hover:bg-pink-700 transition-all font-bold"
         >
           añadir To-Do
@@ -62,7 +66,6 @@ export const TodoList = () => {
                 {todos.map((todo) => (
                   <TodoCardList
                     key={todo.id}
-                    token={token}
                     todo={todo}
                     onToggle={toggleTodo}
                     onDelete={deleteTodo}

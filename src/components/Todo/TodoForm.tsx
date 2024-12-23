@@ -13,7 +13,6 @@ const initialTodoState: TodoDraft = {
 };
 
 export const TodoForm = () => {
-  const token = useStoreUser((state) => state.token);
   const setToken = useStoreUser((state) => state.setToken);
   const userId = useStoreUser((state) => state.user.id);
 
@@ -44,8 +43,8 @@ export const TodoForm = () => {
 
     const res =
       todoSelected === null
-        ? await addTodoApi({ todo, token, userId })
-        : await updateTodoApi({ todo, id: todoSelected.id, token });
+        ? await addTodoApi({ todo, userId })
+        : await updateTodoApi({ todo, id: todoSelected.id });
 
     if (!res.success) {
       setToast({
@@ -58,6 +57,9 @@ export const TodoForm = () => {
       if (res.notoken) {
         localStorage.removeItem("token");
         setToken("");
+        showModal(false);
+        setTodoSelected(null);
+        setTodo(initialTodoState);
         return;
       }
 
@@ -97,7 +99,7 @@ export const TodoForm = () => {
   return (
     <>
       <h2 className="text-2xl font-bold mb-4 text-blue-500 uppercase text-center">
-        añadir To-do
+        {todoSelected ? "Editar To-Do" : "Añadir To-Do"}
       </h2>
       <div className="mb-4">
         <Input
@@ -126,7 +128,7 @@ export const TodoForm = () => {
           type="button"
           onClick={handleClick}
         >
-          Añadir
+          {todoSelected ? "Actualizar" : "Añadir"}
         </button>
       </div>
     </>

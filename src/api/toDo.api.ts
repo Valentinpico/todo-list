@@ -4,15 +4,23 @@ import { API_URL } from "../utils/constants.ts";
 
 export const addTodoApi = async ({
   todo,
-  token,
   userId,
 }: {
   todo: TodoDraft;
-  token: string;
   userId: string;
 }) => {
   const todoWithUserId = { ...todo, userId };
 
+  const token = localStorage.getItem("token");
+
+  if (token === "") {
+    return {
+      message: "No hay token",
+      success: false,
+      data: null,
+      notoken: true,
+    };
+  }
   try {
     const response = await fetch(`${API_URL}/todos`, {
       method: "POST",
@@ -33,12 +41,21 @@ export const addTodoApi = async ({
 export const updateTodoApi = async ({
   todo,
   id,
-  token,
 }: {
   todo: TodoDraft;
   id: string;
-  token: string;
 }) => {
+  const token = localStorage.getItem("token");
+
+  if (token === "") {
+    return {
+      message: "No hay token",
+      success: false,
+      data: null,
+      notoken: true,
+    };
+  }
+
   try {
     const response = await fetch(`${API_URL}/todos/${id}`, {
       method: "PUT",
@@ -55,13 +72,17 @@ export const updateTodoApi = async ({
   }
 };
 
-export const deleteTodoApi = async ({
-  id,
-  token,
-}: {
-  id: string;
-  token: string;
-}) => {
+export const deleteTodoApi = async ({ id }: { id: string }) => {
+  const token = localStorage.getItem("token");
+
+  if (token === "") {
+    return {
+      message: "No hay token",
+      success: false,
+      data: null,
+      notoken: true,
+    };
+  }
   try {
     const response = await fetch(`${API_URL}/todos/${id}`, {
       method: "DELETE",
