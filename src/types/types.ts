@@ -21,4 +21,5 @@ export type responseApiType = {
   data: any;
   message: string;
   success: boolean;
+  notoken?: boolean;
 };

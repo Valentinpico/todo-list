@@ -6,6 +6,7 @@ import { TodoType } from "../../types/types";
 import { useStoreUtils } from "../../store/useStoreUtils";
 import { deleteTodoApi, updateTodoApi } from "../../api/toDo.api";
 import { convertDate } from "../../utils/convertDate";
+import { useStoreUser } from "../../store/useStoreUser";
 
 interface TodoCardProps {
   todo: TodoType;
@@ -20,14 +21,28 @@ export const TodoCardList = ({
   onDelete,
   token,
 }: TodoCardProps) => {
+  const setToken = useStoreUser((state) => state.setToken);
   const setTodoSelected = useTodoStore((state) => state.setTodoSelected);
   const showModal = useStoreUtils((state) => state.showModal);
+  const setToast = useStoreUtils((state) => state.setToast);
 
   const date = convertDate(todo.createdAt);
 
   const handledDelete = async () => {
     const res = await deleteTodoApi({ id: todo.id, token });
-    if (!res.success) return;
+    if (!res.success) {
+      setToast({
+        message: res.message,
+        type: "error",
+        isVisible: true,
+        duration: 3000,
+      });
+      if (res.notoken) {
+        localStorage.removeItem("token");
+        setToken("");
+        return;
+      }
+    }
     onDelete(todo.id);
   };
 
@@ -37,7 +52,19 @@ export const TodoCardList = ({
       token,
       todo: { ...todo, completed: !todo.completed },
     });
-    if (!res.success) return;
+    if (!res.success) {
+      setToast({
+        message: res.message,
+        type: "error",
+        isVisible: true,
+        duration: 3000,
+      });
+      if (res.notoken) {
+        localStorage.removeItem("token");
+        setToken("");
+      }
+      return;
+    }
 
     onToggle(todo.id);
   };

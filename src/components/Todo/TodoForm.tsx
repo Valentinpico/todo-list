@@ -14,6 +14,7 @@ const initialTodoState: TodoDraft = {
 
 export const TodoForm = () => {
   const token = useStoreUser((state) => state.token);
+  const setToken = useStoreUser((state) => state.setToken);
   const userId = useStoreUser((state) => state.user.id);
 
   //Estados globales de la aplicacion
@@ -53,6 +54,13 @@ export const TodoForm = () => {
         isVisible: true,
         duration: 3000,
       });
+
+      if (res.notoken) {
+        localStorage.removeItem("token");
+        setToken("");
+        return;
+      }
+
       return;
     }
     todoSelected === null

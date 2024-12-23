@@ -12,6 +12,7 @@ export const addTodoApi = async ({
   userId: string;
 }) => {
   const todoWithUserId = { ...todo, userId };
+
   try {
     const response = await fetch(`${API_URL}/todos`, {
       method: "POST",
