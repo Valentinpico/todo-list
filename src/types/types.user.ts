@@ -11,3 +11,5 @@ export type loginType = {
   emailOrUsername: string;
   password: string;
 };
+
+export type UserDTO = Omit<UserType, "password">;

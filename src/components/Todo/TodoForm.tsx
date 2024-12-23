@@ -3,6 +3,8 @@ import { Input } from "../Inputs/Input";
 import { TodoDraft } from "../../types/types";
 import { useTodoStore } from "../../store/useTodoStore";
 import { useStoreUtils } from "../../store/useStoreUtils";
+import { addTodoApi, updateTodoApi } from "../../api/toDo.api";
+import { useStoreUser } from "../../store/useStoreUser";
 
 const initialTodoState: TodoDraft = {
   title: "",
@@ -10,19 +12,22 @@ const initialTodoState: TodoDraft = {
 };
 
 export const TodoForm = () => {
+  const token = useStoreUser((state) => state.token);
+  const userId = useStoreUser((state) => state.user.id);
+
   //Estados globales de la aplicacion
   const showModal = useStoreUtils((state) => state.showModal);
   const setToast = useStoreUtils((state) => state.setToast);
 
-  const addTodo = useTodoStore((state) => state.addTodo);
   const updateTodo = useTodoStore((state) => state.updateTodo);
+  const addtodo = useTodoStore((state) => state.addTodo);
   const todoSelected = useTodoStore((state) => state.todoSelected);
   const setTodoSelected = useTodoStore((state) => state.setTodoSelected);
   //Stados de la aplicacion
   const [todo, setTodo] = useState<TodoDraft>(initialTodoState);
   const [error, setError] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     const isValid = validateInputs();
     if (!isValid) {
       setToast({
@@ -35,8 +40,22 @@ export const TodoForm = () => {
       return;
     }
 
+    const res =
+      todoSelected === null
+        ? await addTodoApi({ todo, token, userId })
+        : await updateTodoApi({ todo, id: todoSelected.id, token });
+
+    if (!res.success) {
+      setToast({
+        message: res.message,
+        type: "error",
+        isVisible: true,
+        duration: 3000,
+      });
+      return;
+    }
     todoSelected === null
-      ? addTodo(todo)
+      ? addtodo(res.data)
       : updateTodo({ ...todo, id: todoSelected.id });
 
     setTodo(initialTodoState);

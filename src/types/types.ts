@@ -2,6 +2,7 @@ export type TodoType = {
   id: string;
   title: string;
   completed: boolean;
+  createdAt: string;
 };
 
 export type TodoDraft = Omit<TodoType, "id">;
@@ -14,4 +15,10 @@ export type ToastType = {
   type: TypeToastType;
   duration?: number;
   onClose?: () => void;
+};
+
+export type responseApiType = {
+  data: any;
+  message: string;
+  success: boolean;
 };

@@ -3,6 +3,8 @@ import { loginType, UserDraftType } from "../../types/types.user";
 import { LoginForm } from "./LoginForm";
 import { RegisterForm } from "./RegisterForm";
 import { useStoreUtils } from "../../store/useStoreUtils";
+import { createUserApi, loginUserApi } from "../../api/users.api";
+import { useStoreUser } from "../../store/useStoreUser";
 const initialUserState: UserDraftType = {
   email: "",
   password: "",
@@ -15,6 +17,7 @@ const initialLoginState: loginType = {
 };
 export const FormUser = () => {
   const setToast = useStoreUtils((state) => state.setToast);
+  const setToken = useStoreUser((state) => state.setToken);
 
   const [user, setUser] = useState<UserDraftType>(initialUserState);
   const [LoginState, setLoginState] = useState<loginType>(initialLoginState);
@@ -37,7 +40,7 @@ export const FormUser = () => {
     registerSubmit();
   };
 
-  const loginSubmit = () => {
+  const loginSubmit = async () => {
     if (LoginState.emailOrUsername === "" || LoginState.password === "") {
       setToast({
         message: "Los campos son obligatorios",
@@ -48,9 +51,23 @@ export const FormUser = () => {
       return;
     }
 
+    const res = await loginUserApi(LoginState);
+
+    setToast({
+      message: res.message,
+      type: res.success ? "success" : "error",
+      isVisible: true,
+    });
+
+    if (res.success) {
+      localStorage.setItem("token", res.data);
+      setToken(res.data);
+      return;
+    }
+
     setShowError(false);
   };
-  const registerSubmit = () => {
+  const registerSubmit = async () => {
     if (
       user.email === "" ||
       user.password === "" ||
@@ -66,6 +83,18 @@ export const FormUser = () => {
       setShowError(true);
       return;
     }
+    const res = await createUserApi(user);
+    setToast({
+      message: res.message,
+      type: res.success ? "success" : "error",
+      isVisible: true,
+    });
+
+    if (res.success) {
+      setUser(initialUserState);
+      setRegister(false);
+    }
+
     setShowError(false);
   };
 

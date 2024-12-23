@@ -1,5 +1,16 @@
+import { useStoreUser } from "../../store/useStoreUser";
+
 export const Navbar = () => {
-  const login = false;
+  const token = useStoreUser((state) => state.token);
+  const setToken = useStoreUser((state) => state.setToken);
+  const user = useStoreUser((state) => state.user);
+  const haveToken = token !== "";
+
+  const handleCerrarSesion = () => {
+    localStorage.removeItem("token");
+    setToken("");
+  };
+
   return (
     <nav className="bg-gray-800 p-4 fixed top-0 w-full z-10">
       <div className="container mx-auto flex items-center justify-between">
@@ -8,7 +19,7 @@ export const Navbar = () => {
         </span>
 
         <div className="flex items-center space-x-4">
-          {login ? (
+          {haveToken ? (
             <>
               <a
                 href="#"
@@ -17,9 +28,12 @@ export const Navbar = () => {
                 Inicio
               </a>
 
-              <span className="text-gray-300">Bienvenido, Usuario</span>
+              <span className="text-gray-300">Bienvenido, {user.username}</span>
 
-              <button className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
+              <button
+                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                onClick={handleCerrarSesion}
+              >
                 Cerrar Sesión
               </button>
             </>

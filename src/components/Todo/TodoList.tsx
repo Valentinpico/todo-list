@@ -1,9 +1,16 @@
+import { useEffect } from "react";
 import { useStoreUtils } from "../../store/useStoreUtils";
 import { useTodoStore } from "../../store/useTodoStore";
 import { TodoCardList } from "./TodoCardList";
+import { getUserWithToDosApi } from "../../api/users.api";
+import { useStoreUser } from "../../store/useStoreUser";
 
 export const TodoList = () => {
+  const token = useStoreUser((state) => state.token);
+  const SetUser = useStoreUser((state) => state.setUser);
+
   const todos = useTodoStore((state) => state.todos);
+  const setTodos = useTodoStore((state) => state.setTodos);
   const deleteTodo = useTodoStore((state) => state.deleteTodo);
   const toggleTodo = useTodoStore((state) => state.toggleTodo);
 
@@ -11,6 +18,21 @@ export const TodoList = () => {
 
   const todoLength = todos.length;
   const completedTodos = todos.filter((todo) => todo.completed).length;
+
+  const getUserWithToDos = async () => {
+    const res = await getUserWithToDosApi(token);
+    if (!res.success) return;
+    setTodos(res.data.todos);
+    SetUser({
+      email: res.data.email,
+      username: res.data.username,
+      id: res.data.id,
+    });
+  };
+
+  useEffect(() => {
+    getUserWithToDos();
+  }, []);
 
   return (
     <>
@@ -39,6 +61,7 @@ export const TodoList = () => {
               <div className="mt-4 space-y-2">
                 {todos.map((todo) => (
                   <TodoCardList
+                    token={token}
                     todo={todo}
                     onToggle={toggleTodo}
                     onDelete={deleteTodo}

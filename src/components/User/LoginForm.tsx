@@ -39,7 +39,7 @@ export const LoginForm = ({
         placeholder="Contraseña"
         showError={showError}
         maxLength={10}
-        minLength={6}
+        minLength={4}
       />
     </>
   );

@@ -3,10 +3,9 @@ import { TodoDraft, TodoType } from "../types/types";
 
 export type TodoStoreType = {
   todos: TodoType[];
+  setTodos: (todos: TodoType[]) => void;
   todoSelected: TodoType | null;
-
   setTodoSelected: (todo: TodoType | null) => void;
-
   addTodo: (todo: TodoDraft) => void;
   toggleTodo: (id: TodoType["id"]) => void;
   deleteTodo: (id: TodoType["id"]) => void;
@@ -15,6 +14,11 @@ export type TodoStoreType = {
 
 export const useTodoStore = create<TodoStoreType>((set) => ({
   todos: [],
+  setTodos: (todos) => {
+    set(() => ({
+      todos: todos,
+    }));
+  },
   todoSelected: null,
   setTodoSelected: (todo) => {
     set(() => ({
@@ -24,11 +28,11 @@ export const useTodoStore = create<TodoStoreType>((set) => ({
   addTodo: (todo) => {
     set((state) => ({
       todos: [
-        ...state.todos,
         {
-          id: Math.random().toString(36).substr(2, 9),
+          id: "",
           ...todo,
         },
+        ...state.todos,
       ],
     }));
   },
