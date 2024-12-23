@@ -5,7 +5,6 @@ import { useTodoStore } from "../../store/useTodoStore";
 import { TodoType } from "../../types/types";
 import { useStoreUtils } from "../../store/useStoreUtils";
 import { deleteTodoApi, updateTodoApi } from "../../api/toDo.api";
-import { useStoreUser } from "../../store/useStoreUser";
 import { convertDate } from "../../utils/convertDate";
 
 interface TodoCardProps {

@@ -1,5 +1,4 @@
-import { todo } from "node:test";
-import { responseApiType, TodoDraft, TodoType } from "../types/types";
+import { responseApiType, TodoDraft } from "../types/types";
 
 import { API_URL } from "../utils/constants.ts";
 

@@ -41,7 +41,7 @@ export const TodoList = () => {
           onClick={() => showModal(true)}
           className="text-center bg-pink-500 text-white uppercase rounded w-full my-2 p-1 text-2xl hover:bg-pink-700 transition-all font-bold"
         >
-          Add To-Do
+          añadir To-Do
         </button>
         {todoLength > 0 ? (
           <>

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { UserDTO, UserType } from "../types/types.user";
+import { UserDTO } from "../types/types.user";
 
 export type UtilsStoreUser = {
   token: string;

@@ -9,6 +9,7 @@ import { useStoreUser } from "../../store/useStoreUser";
 const initialTodoState: TodoDraft = {
   title: "",
   completed: false,
+  createdAt: "",
 };
 
 export const TodoForm = () => {
@@ -80,14 +81,15 @@ export const TodoForm = () => {
       setTodo({
         title: todoSelected.title,
         completed: todoSelected.completed,
+        createdAt: todoSelected.createdAt,
       });
     }
   }, [todoSelected]);
 
   return (
     <>
-      <h2 className="text-2xl font-bold mb-4 text-fuchsia-900 uppercase text-center">
-        Add Todo
+      <h2 className="text-2xl font-bold mb-4 text-blue-500 uppercase text-center">
+        añadir To-do
       </h2>
       <div className="mb-4">
         <Input
@@ -116,7 +118,7 @@ export const TodoForm = () => {
           type="button"
           onClick={handleClick}
         >
-          Add
+          Añadir
         </button>
       </div>
     </>
