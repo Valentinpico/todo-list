@@ -50,7 +50,7 @@ se utilizaron otras librerias para mejorar la calidad de la app como Heroicons p
 Crea un archivo `.env` en el directorio raíz y añade la URL de la API:
 
 ```env
-VITE_API_URL=http://localhost:3000/api
+VITE_API_URL=http://localhost:3000
 ```
 
 Asegúrate de que el backend esté corriendo en el puerto correcto o ajusta la variable de entorno según corresponda.
